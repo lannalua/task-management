@@ -1,7 +1,7 @@
 # 📝 - Task Management:
 - API de Gerenciamento de Tarefas
 
-##Objetivo do projeto:
+## Objetivo do projeto:
 Avaliar a cobertura dos casos de teste do repositório original com a utilização da técnica de Testes de Mutação com o mutmut. 
 
 ## ✅ - Vantagens do Flask:
@@ -50,12 +50,14 @@ Para executar os testes é necessário inicializar o servidor em um terminal a p
 Renomeia o arquivo de teste para seguir a convenção do mutmut
 ```mv tests.py test_app.py```
 
----Executa os testes com verbosidade
+#### Executa os testes com verbosidade
 ```pytest -vv test_app.py```
 
---- Relatórios de Cobertura
+#### Relatórios de Cobertura
+
 Para ver a cobertura diretamente no terminal:
 ```pytest -vv --cov=app --cov-report=term-missing```
+
 Para gerar um relatório HTML detalhado:
 ```pytest -vv test_app.py --cov=app --cov-report=html --cov-report=term-missing```
 
