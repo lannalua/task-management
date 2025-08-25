@@ -1,4 +1,7 @@
-codeFlask==2.3.0
-Werkzeug==2.3.0
-requests==2.31.0
+coverage==7.10.5
+Flask==2.3.0
+mutmut==3.3.1
 pytest==7.4.3
+pytest-cov==6.2.1
+requests==2.31.0
+Werkzeug==2.3.0

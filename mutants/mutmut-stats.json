@@ -1,0 +1,18 @@
+{
+    "tests_by_mangled_function_name": {
+        "app.x\u01c1Task\u01c1__init__": [
+            "test_app.py::test_create_task"
+        ],
+        "app.x\u01c1Task\u01c1to_dict": [
+            "test_app.py::test_get_tasks"
+        ]
+    },
+    "duration_by_test": {
+        "test_app.py::test_create_task": 0.0003864999998768326,
+        "test_app.py::test_get_tasks": 0.00019489999976940453,
+        "test_app.py::test_get_task": 0.00014059999921300914,
+        "test_app.py::test_update_task": 0.00013760000001639128,
+        "test_app.py::test_delete_task": 0.00013629999921249691
+    },
+    "stats_time": 0.36787480000000006
+}
