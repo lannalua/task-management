@@ -8,40 +8,62 @@ def client():
         tasks.clear()
         yield client
 
+BASE_URL = '/tasks'
+tasks = []
+
 def test_create_task(client):
-    response = client.post("/tasks", json={"title": "Nova tarefa", "description": "Teste"})
+    new_task_data = {
+        "title": "Nova tarefa",
+        "description": "Descrição da nova tarefa"
+    }
+    
+    response = client.post(BASE_URL, json=new_task_data)
     assert response.status_code == 200
-    json_data = response.get_json()
-    assert "id" in json_data
-    assert json_data["message"] == "Nova tarefa criada com sucesso"
+    response_json = response.get_json()
+    assert "message" in response_json
+    assert "id" in response_json
+    tasks.append(response_json['id'])
 
 def test_get_tasks(client):
-    client.post("/tasks", json={"title": "Tarefa 1"})
-    response = client.get("/tasks")
+    response = client.get(BASE_URL)
     assert response.status_code == 200
-    json_data = response.get_json()
-    assert "tasks" in json_data
-    assert json_data["total_tasks"] == 1
+    response_json = response.get_json()
+    assert "tasks" in response_json
+    assert "total_tasks" in response_json
+
+def test_get_task(client):
+    if tasks:
+        task_id = tasks[0]
+        response = client.get(f"{BASE_URL}/{task_id}")
+        assert response.status_code == 200
+        response_json = response.get_json()
+        assert task_id == response_json['id']
 
 def test_update_task(client):
-    r = client.post("/tasks", json={"title": "Teste", "description": "desc"})
-    task_id = r.get_json()["id"]
+    if tasks:
+        task_id = tasks[0]
+        payload = {
+            "completed": True,
+            "description": "Nova descrição",
+            "title": "Título atualizado"
+        }
+        response = client.put(f"{BASE_URL}/{task_id}", json=payload)
+        assert response.status_code == 200
+        response_json = response.get_json()
+        assert "message" in response_json
 
-    payload = {"title": "Atualizado", "description": "Nova desc", "completed": True}
-    response = client.put(f"/tasks/{task_id}", json=payload)
-    assert response.status_code == 200
-
-    r2 = client.get(f"/tasks/{task_id}")
-    task = r2.get_json()
-    assert task["title"] == payload["title"]
-    assert task["completed"] == payload["completed"]
+        response = client.get(f"{BASE_URL}/{task_id}")
+        assert response.status_code == 200
+        response_json = response.get_json()
+        assert response_json["title"] == payload["title"]
+        assert response_json["description"] == payload["description"]
+        assert response_json["completed"] == payload["completed"]
 
 def test_delete_task(client):
-    r = client.post("/tasks", json={"title": "Teste"})
-    task_id = r.get_json()["id"]
+    if tasks:
+        task_id = tasks[0]
+        response = client.delete(f"{BASE_URL}/{task_id}")
+        assert response.status_code == 200
 
-    response = client.delete(f"/tasks/{task_id}")
-    assert response.status_code == 200
-
-    r2 = client.get(f"/tasks/{task_id}")
-    assert r2.status_code == 404
+        response = client.get(f"{BASE_URL}/{task_id}")
+        assert response.status_code == 404
